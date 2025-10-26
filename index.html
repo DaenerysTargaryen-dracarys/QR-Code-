@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR CODE</title>
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #4a90e2;
+            background-color: #f9f9f9;
+        }
+        
+        .upload-area.highlight {
+            border-color: #4a90e2;
+            background-color: #f0f7ff;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .file-info {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .qr-display {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .qr-code {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .receipt-info {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .sales-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .dine-in {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .takeaway {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .delivery {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .nav-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .nav-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .action-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .action-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .counter {
+            text-align: center;
+            margin: 10px 0;
+            color: #666;
+        }
+        
+        .scan-status {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .scanned {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .not-scanned {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            border-left-color: #4a90e2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QR CODE</h1>
+        
+        <div class="upload-area" id="uploadArea">
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
+            <button class="upload-btn">Upload Excel File</button>
+            <p class="file-info">Drag & drop or click to upload</p>
+            <p class="file-info">Format: .xlsx or .xls</p>
+        </div>
+        
+        <div class="error" id="errorMessage"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        
+        <div class="qr-display" id="qrDisplay">
+            <div class="receipt-info" id="receiptInfo"></div>
+            <div class="sales-type" id="salesType"></div>
+            <div class="qr-code" id="qrCode"></div>
+            <div class="scan-status" id="scanStatus"></div>
+            
+            <div class="counter" id="counter">1 of 0</div>
+            
+            <div class="controls">
+                <button class="nav-btn" id="prevBtn" disabled>&lt;</button>
+                <button class="action-btn" id="markScannedBtn" disabled>Mark Scanned</button>
+                <button class="action-btn" id="downloadBtn" disabled>Download</button>
+                <button class="nav-btn" id="nextBtn" disabled>&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const qrDisplay = document.getElementById('qrDisplay');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const receiptInfo = document.getElementById('receiptInfo');
+            const salesType = document.getElementById('salesType');
+            const qrCode = document.getElementById('qrCode');
+            const scanStatus = document.getElementById('scanStatus');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const markScannedBtn = document.getElementById('markScannedBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const counter = document.getElementById('counter');
+            
+            let currentIndex = 0;
+            let qrData = [];
+            
+            // Upload button click
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // File selection
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                uploadArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                uploadArea.classList.remove('highlight');
+            }
+            
+            uploadArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            }
+            
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+            
+            function handleFiles(files) {
+                if (files.length === 0) return;
+                
+                if (typeof QRCodeStyling === 'undefined' || typeof XLSX === 'undefined') {
+                    showError('Required libraries not loaded. Please refresh the page.');
+                    return;
+                }
+                
+                const file = files[0];
+                const validTypes = [
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'application/vnd.ms-excel'
+                ];
+                
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!validTypes.includes(file.type) && !['xlsx', 'xls'].includes(fileExtension)) {
+                    showError('Please upload an Excel file (.xlsx or .xls).');
+                    return;
+                }
+                
+                processExcel(file);
+            }
+            
+            function processExcel(file) {
+                loading.style.display = 'block';
+                qrDisplay.style.display = 'none';
+                errorMessage.style.display = 'none';
+                qrData = [];
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        
+                        if (jsonData.length < 2) {
+                            throw new Error('Excel file is empty');
+                        }
+                        
+                        const headers = jsonData[0].map(header => 
+                            header ? header.toString().toLowerCase().trim() : ''
+                        );
+                        
+                        const receiptIndex = headers.findIndex(header => 
+                            header.includes('receipt') || header.includes('no')
+                        );
+                        const salesTypeIndex = headers.findIndex(header => 
+                            header.includes('sales') || header.includes('type')
+                        );
+                        const linkIndex = headers.findIndex(header => 
+                            header.includes('link') || header.includes('generated')
+                        );
+                        
+                        if (receiptIndex === -1 || salesTypeIndex === -1 || linkIndex === -1) {
+                            throw new Error('Required columns not found');
+                        }
+                        
+                        for (let i = 1; i < jsonData.length; i++) {
+                            const row = jsonData[i];
+                            if (row && row.length > Math.max(receiptIndex, salesTypeIndex, linkIndex)) {
+                                const receiptNo = row[receiptIndex] ? row[receiptIndex].toString().trim() : '';
+                                const salesTypeVal = row[salesTypeIndex] ? row[salesTypeIndex].toString().trim() : '';
+                                const link = row[linkIndex] ? row[linkIndex].toString().trim() : '';
+                                
+                                if (receiptNo && salesTypeVal && link) {
+                                    qrData.push({
+                                        receiptNo,
+                                        salesType: salesTypeVal,
+                                        link,
+                                        scanned: false,
+                                        id: 'qr-' + i
+                                    });
+                                }
+                            }
+                        }
+                        
+                        if (qrData.length === 0) {
+                            throw new Error('No valid data found');
+                        }
+                        
+                        loading.style.display = 'none';
+                        qrDisplay.style.display = 'block';
+                        currentIndex = 0;
+                        displayQRCode();
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showError('Error: ' + error.message);
+                        loading.style.display = 'none';
+                    }
+                };
+                
+                reader.onerror = function() {
+                    showError('Error reading file');
+                    loading.style.display = 'none';
+                };
+                
+                reader.readAsArrayBuffer(file);
+            }
+            
+            function displayQRCode() {
+                const data = qrData[currentIndex];
+                
+                receiptInfo.textContent = data.receiptNo;
+                salesType.textContent = data.salesType;
+                salesType.className = 'sales-type ' + data.salesType.toLowerCase().replace(/[^a-z]/g, '');
+                
+                scanStatus.textContent = data.scanned ? 'Scanned' : 'Not Scanned';
+                scanStatus.className = 'scan-status ' + (data.scanned ? 'scanned' : 'not-scanned');
+                
+                qrCode.innerHTML = '';
+                
+                try {
+                    const qr = new QRCodeStyling({
+                        width: 200,
+                        height: 200,
+                        data: data.link,
+                        dotsOptions: {
+                            color: data.scanned ? '#cccccc' : '#000000'
+                        },
+                        backgroundOptions: {
+                            color: "#ffffff"
+                        }
+                    });
+                    
+                    qr.append(qrCode);
+                    data.qrInstance = qr;
+                    
+                } catch (error) {
+                    qrCode.innerHTML = '<p>Error generating QR code</p>';
+                }
+                
+                counter.textContent = `${currentIndex + 1} of ${qrData.length}`;
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === qrData.length - 1;
+                markScannedBtn.disabled = data.scanned;
+                downloadBtn.disabled = false;
+                
+                if (data.scanned) {
+                    markScannedBtn.textContent = 'Already Scanned';
+                } else {
+                    markScannedBtn.textContent = 'Mark Scanned';
+                }
+            }
+            
+            function markAsScanned() {
+                if (qrData[currentIndex].scanned) return;
+                
+                qrData[currentIndex].scanned = true;
+                displayQRCode();
+                
+                if (currentIndex < qrData.length - 1) {
+                    setTimeout(() => {
+                        currentIndex++;
+                        displayQRCode();
+                    }, 500);
+                }
+            }
+            
+            function downloadQRCode() {
+                const data = qrData[currentIndex];
+                if (data.qrInstance) {
+                    data.qrInstance.download({ 
+                        name: `QR-${data.receiptNo}`,
+                        extension: "png"
+                    });
+                }
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            // Event listeners
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    displayQRCode();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < qrData.length - 1) {
+                    currentIndex++;
+                    displayQRCode();
+                }
+            });
+            
+            markScannedBtn.addEventListener('click', markAsScanned);
+            downloadBtn.addEventListener('click', downloadQRCode);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    markScannedBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
