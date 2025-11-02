@@ -34,31 +34,6 @@
             padding: 30px;
             position: relative;
             border: 4px solid #000;
-            transform: rotate(-1deg);
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: rotate(-1deg) translateY(0px); }
-            50% { transform: rotate(-1deg) translateY(-10px); }
-        }
-        
-        .comic-container::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            border-radius: 25px;
-            z-index: -1;
-            animation: rotate 10s linear infinite;
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         
         h1 {
@@ -69,7 +44,6 @@
             font-size: 3em;
             text-shadow: 3px 3px 0px #000;
             letter-spacing: 2px;
-            transform: rotate(-2deg);
         }
         
         .comic-upload-area {
@@ -79,16 +53,12 @@
             text-align: center;
             margin-bottom: 25px;
             cursor: pointer;
-            transition: all 0.3s;
             background: #f8f9fa;
             position: relative;
-            transform: rotate(1deg);
         }
         
         .comic-upload-area:hover {
             background: #e9ecef;
-            transform: rotate(1deg) scale(1.02);
-            box-shadow: 5px 5px 0px #000;
         }
         
         .comic-upload-area.highlight {
@@ -111,19 +81,7 @@
             font-weight: bold;
             font-family: 'Comic Neue', cursive;
             margin-bottom: 15px;
-            transition: all 0.3s;
             box-shadow: 5px 5px 0px #000;
-            transform: rotate(-1deg);
-        }
-        
-        .comic-btn:hover {
-            transform: rotate(-1deg) translateY(-3px);
-            box-shadow: 8px 8px 0px #000;
-        }
-        
-        .comic-btn:active {
-            transform: rotate(-1deg) translateY(1px);
-            box-shadow: 2px 2px 0px #000;
         }
         
         .comic-btn.primary {
@@ -136,7 +94,6 @@
         
         .comic-btn:disabled {
             background: #ccc;
-            transform: none;
             box-shadow: 2px 2px 0px #666;
             cursor: not-allowed;
         }
@@ -152,7 +109,6 @@
             margin: 25px 0;
             text-align: center;
             display: none;
-            transform: rotate(1deg);
         }
         
         .filter-label {
@@ -175,14 +131,12 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 5px 5px 0px #000;
-            transform: rotate(-1deg);
         }
         
         .comic-qr-display {
             display: none;
             text-align: center;
             margin-top: 25px;
-            transform: rotate(-1deg);
         }
         
         .comic-qr-code {
@@ -217,7 +171,6 @@
             margin-bottom: 15px;
             border: 2px solid #000;
             box-shadow: 3px 3px 0px #000;
-            transform: rotate(-2deg);
         }
         
         .dine-in {
@@ -254,17 +207,10 @@
             font-size: 20px;
             font-weight: bold;
             box-shadow: 5px 5px 0px #000;
-            transform: rotate(-2deg);
-            transition: all 0.3s;
-        }
-        
-        .nav-btn:hover {
-            transform: rotate(-2deg) scale(1.1);
         }
         
         .nav-btn:disabled {
             background: #ccc;
-            transform: none;
             box-shadow: 2px 2px 0px #666;
         }
         
@@ -276,13 +222,7 @@
             font-weight: bold;
             border: 3px solid #000;
             box-shadow: 5px 5px 0px #000;
-            transform: rotate(1deg);
-            transition: all 0.3s;
             font-family: 'Comic Neue', cursive;
-        }
-        
-        .action-btn:hover {
-            transform: rotate(1deg) translateY(-3px);
         }
         
         .counter {
@@ -302,7 +242,6 @@
             font-size: 1.1em;
             border: 2px solid #000;
             box-shadow: 3px 3px 0px #000;
-            transform: rotate(1deg);
         }
         
         .scanned {
@@ -348,7 +287,6 @@
             border: 3px solid #000;
             box-shadow: 5px 5px 0px #000;
             font-weight: bold;
-            transform: rotate(1deg);
         }
         
         .comic-footer {
@@ -364,7 +302,6 @@
             font-family: 'Bangers', cursive;
             font-size: 1.5em;
             letter-spacing: 2px;
-            transform: rotate(-2deg);
         }
         
         .speech-bubble {
@@ -375,7 +312,6 @@
             margin: 10px 0;
             border: 3px solid #000;
             box-shadow: 5px 5px 0px #000;
-            transform: rotate(-1deg);
         }
         
         .speech-bubble::after {
@@ -388,22 +324,11 @@
             border-bottom: 0;
             margin-left: -10px;
         }
-        
-        /* Pop effect for interactions */
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        .pop-animation {
-            animation: pop 0.3s ease-in-out;
-        }
     </style>
 </head>
 <body>
     <div class="comic-container">
-        <h1>POW! QR GENERATOR</h1>
+        <h1>COMIC QR GENERATOR</h1>
         
         <div class="speech-bubble">
             <p>Upload your Excel file to generate awesome QR codes!</p>
@@ -411,18 +336,18 @@
         
         <div class="comic-upload-area" id="uploadArea">
             <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
-            <button class="comic-btn">BAM! UPLOAD FILE</button>
-            <p class="file-info">💥 Drag & drop or click to upload</p>
-            <p class="file-info">📊 Format: .xlsx or .xls</p>
+            <button class="comic-btn">UPLOAD FILE</button>
+            <p class="file-info">Drag & drop or click to upload</p>
+            <p class="file-info">Format: .xlsx or .xls</p>
         </div>
         
         <div class="comic-filter" id="filterSection">
             <label class="filter-label">FILTER BY ORDER TYPE:</label>
             <select id="salesTypeFilter" class="comic-dropdown">
-                <option value="all">ALL ORDERS! 🎯</option>
-                <option value="dinein">DINE-IN 🍽️</option>
-                <option value="takeaway">TAKEAWAY 🚀</option>
-                <option value="delivery">DELIVERY 🛵</option>
+                <option value="all">ALL ORDERS</option>
+                <option value="dinein">DINE-IN</option>
+                <option value="takeaway">TAKEAWAY</option>
+                <option value="delivery">DELIVERY</option>
             </select>
         </div>
         
@@ -430,14 +355,14 @@
         
         <div class="comic-loading" id="loading">
             <div class="comic-spinner"></div>
-            <p>ZAP! Processing your file...</p>
+            <p>Processing your file...</p>
         </div>
         
         <div class="comic-qr-display" id="qrDisplay">
             <div class="receipt-info" id="receiptInfo"></div>
             <div class="sales-type" id="salesType"></div>
             <div class="comic-qr-code" id="qrCode">
-                <p>QR Code will appear here! ✨</p>
+                <p>QR Code will appear here</p>
             </div>
             <div class="scan-status" id="scanStatus"></div>
             
@@ -445,20 +370,20 @@
             
             <div class="comic-controls">
                 <button class="nav-btn" id="prevBtn" disabled>←</button>
-                <button class="comic-btn success" id="markScannedBtn" disabled>MARK SCANNED! ✅</button>
-                <button class="comic-btn primary" id="downloadBtn" disabled>DOWNLOAD! 💾</button>
+                <button class="comic-btn success" id="markScannedBtn" disabled>MARK SCANNED</button>
+                <button class="comic-btn primary" id="downloadBtn" disabled>DOWNLOAD</button>
                 <button class="nav-btn" id="nextBtn" disabled>→</button>
             </div>
         </div>
         
         <div class="comic-footer">
-            KAPOW! Designed By MATRIX 💫
+            Designed By MATRIX
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🦸 Comic QR Generator loaded!');
+            console.log('Comic QR Generator loaded!');
             
             const fileInput = document.getElementById('fileInput');
             const uploadArea = document.getElementById('uploadArea');
@@ -482,22 +407,14 @@
             let filteredData = [];
             let selectedFilter = 'all';
 
-            // Add pop animation
-            function addPopAnimation(element) {
-                element.classList.add('pop-animation');
-                setTimeout(() => {
-                    element.classList.remove('pop-animation');
-                }, 300);
-            }
-
             // Check libraries
             function checkLibraries() {
                 if (typeof QRCodeStyling === 'undefined') {
-                    showError('QR Code library missing! Check internet connection. 🌐');
+                    showError('QR Code library missing! Check internet connection.');
                     return false;
                 }
                 if (typeof XLSX === 'undefined') {
-                    showError('Excel library missing! Check internet connection. 🌐');
+                    showError('Excel library missing! Check internet connection.');
                     return false;
                 }
                 return true;
@@ -505,13 +422,12 @@
             
             // Upload area interactions
             uploadArea.addEventListener('click', function() {
-                addPopAnimation(uploadArea);
                 fileInput.click();
             });
             
             fileInput.addEventListener('change', handleFileSelect);
             
-            // Drag and drop with comic effects
+            // Drag and drop
             ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 uploadArea.addEventListener(eventName, preventDefaults, false);
             });
@@ -531,12 +447,10 @@
             
             function highlight() {
                 uploadArea.classList.add('highlight');
-                uploadArea.style.transform = 'rotate(1deg) scale(1.05)';
             }
             
             function unhighlight() {
                 uploadArea.classList.remove('highlight');
-                uploadArea.style.transform = 'rotate(1deg)';
             }
             
             uploadArea.addEventListener('drop', handleDrop, false);
@@ -560,7 +474,7 @@
                 const fileExtension = file.name.split('.').pop().toLowerCase();
                 
                 if (!['xlsx', 'xls'].includes(fileExtension)) {
-                    showError('WHOOPS! Please upload an Excel file (.xlsx or .xls) 📊');
+                    showError('Please upload an Excel file (.xlsx or .xls)');
                     return;
                 }
                 
@@ -582,14 +496,14 @@
                         const workbook = XLSX.read(data, { type: 'array' });
                         
                         if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
-                            throw new Error('No sheets found in the file! 📄');
+                            throw new Error('No sheets found in the file!');
                         }
                         
                         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
                         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
                         
                         if (jsonData.length < 2) {
-                            throw new Error('File is empty! Add some data! 📝');
+                            throw new Error('File is empty! Add some data!');
                         }
                         
                         const headers = jsonData[0].map(header => 
@@ -608,7 +522,7 @@
                         );
                         
                         if (receiptIndex === -1 || salesTypeIndex === -1 || linkIndex === -1) {
-                            throw new Error('Missing columns! Need: Receipt, Sales Type, and Link 📋');
+                            throw new Error('Missing columns! Need: Receipt, Sales Type, and Link');
                         }
                         
                         for (let i = 1; i < jsonData.length; i++) {
@@ -631,7 +545,7 @@
                         }
                         
                         if (qrData.length === 0) {
-                            throw new Error('No valid data found! Check your file format 🕵️');
+                            throw new Error('No valid data found! Check your file format');
                         }
                         
                         loading.style.display = 'none';
@@ -642,13 +556,13 @@
                         
                     } catch (error) {
                         console.error('Error:', error);
-                        showError('KABOOM! ' + error.message);
+                        showError('Error: ' + error.message);
                         loading.style.display = 'none';
                     }
                 };
                 
                 reader.onerror = function() {
-                    showError('File reading failed! Try again 🔄');
+                    showError('File reading failed! Try again');
                     loading.style.display = 'none';
                 };
                 
@@ -671,7 +585,7 @@
                 
                 if (filteredData.length === 0) {
                     qrDisplay.style.display = 'none';
-                    showError('No orders found for: ' + selectedFilter.toUpperCase() + ' 🎯');
+                    showError('No orders found for: ' + selectedFilter.toUpperCase());
                 } else {
                     errorMessage.style.display = 'none';
                     qrDisplay.style.display = 'block';
@@ -694,7 +608,7 @@
                      typeClass.includes('takeaway') ? 'takeaway' : 
                      typeClass.includes('delivery') ? 'delivery' : 'dine-in');
                 
-                scanStatus.textContent = data.scanned ? '✅ SCANNED! GOOD JOB!' : '❌ NOT SCANNED YET!';
+                scanStatus.textContent = data.scanned ? 'SCANNED' : 'NOT SCANNED';
                 scanStatus.className = 'scan-status ' + (data.scanned ? 'scanned' : 'not-scanned');
                 
                 qrCode.innerHTML = '';
@@ -721,19 +635,16 @@
                     data.qrInstance = qr;
                     
                 } catch (error) {
-                    qrCode.innerHTML = '<p>💥 QR Code Error!</p>';
+                    qrCode.innerHTML = '<p>QR Code Error!</p>';
                 }
                 
-                counter.textContent = `📊 ${currentIndex + 1} of ${filteredData.length}`;
+                counter.textContent = `${currentIndex + 1} of ${filteredData.length}`;
                 prevBtn.disabled = currentIndex === 0;
                 nextBtn.disabled = currentIndex === filteredData.length - 1;
                 markScannedBtn.disabled = data.scanned;
                 downloadBtn.disabled = false;
                 
-                markScannedBtn.textContent = data.scanned ? 'ALREADY SCANNED! 🎉' : 'MARK SCANNED! ✅';
-                
-                // Add pop effect
-                addPopAnimation(qrCode);
+                markScannedBtn.textContent = data.scanned ? 'ALREADY SCANNED' : 'MARK SCANNED';
             }
             
             function markAsScanned() {
@@ -747,7 +658,6 @@
                 }
                 
                 displayQRCode();
-                addPopAnimation(scanStatus);
                 
                 if (currentIndex < filteredData.length - 1) {
                     setTimeout(() => {
@@ -762,12 +672,11 @@
                 if (data.qrInstance) {
                     try {
                         data.qrInstance.download({ 
-                            name: `COMIC-QR-${data.receiptNo}`,
+                            name: `QR-${data.receiptNo}`,
                             extension: "png"
                         });
-                        addPopAnimation(downloadBtn);
                     } catch (error) {
-                        showError('Download failed! 🚫');
+                        showError('Download failed!');
                     }
                 }
             }
@@ -775,15 +684,13 @@
             function showError(message) {
                 errorMessage.textContent = message;
                 errorMessage.style.display = 'block';
-                addPopAnimation(errorMessage);
             }
             
-            // Event listeners with comic effects
+            // Event listeners
             prevBtn.addEventListener('click', function() {
                 if (currentIndex > 0) {
                     currentIndex--;
                     displayQRCode();
-                    addPopAnimation(prevBtn);
                 }
             });
             
@@ -791,7 +698,6 @@
                 if (currentIndex < filteredData.length - 1) {
                     currentIndex++;
                     displayQRCode();
-                    addPopAnimation(nextBtn);
                 }
             });
             
@@ -813,7 +719,7 @@
             
             // Initial check
             if (!checkLibraries()) {
-                showError('Libraries loading... Refresh if problems persist! 🔄');
+                showError('Libraries loading... Refresh if problems persist.');
             }
         });
     </script>
